@@ -1,4 +1,5 @@
 import {
+	Modal,
     Table,
     TableBody,
     TableCell,
@@ -17,6 +18,7 @@ const ProductsTable = ({products}) => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredProducts, setFilteredProducts] = useState(products);
+    const [modal, setModal] = useState(false);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -33,7 +35,9 @@ const ProductsTable = ({products}) => {
 
     const handleClickToProduct = item => {
         console.log(item.code);
-    };
+	};
+	
+	const handleOpen = () => setModal(!modal);
 
     useEffect(() => {
         setFilteredProducts(
@@ -89,6 +93,18 @@ const ProductsTable = ({products}) => {
                 onChangePage={handleChangePage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
             />
+            <button type="button" onClick={handleOpen}>
+                Open Modal
+            </button>
+            <Modal
+                open={modal}
+                onClose={handleOpen}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+                <div>test</div>
+				
+            </Modal>
         </TableContainer>
     );
 };
