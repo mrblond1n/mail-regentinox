@@ -4,12 +4,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useFirestoreConnect} from 'react-redux-firebase';
 import DownloadXml from '../components/DownloadXml';
 import ProductsTable from '../components/ProductsTable';
-import {actions} from '../store';
+import {actions, selectors} from '../store';
 
 export default function Home() {
     useFirestoreConnect([{collection: 'products'}]);
     const dispatch = useDispatch();
-    const products = useSelector(state => state.firestore.ordered.products) || [];
+    const productsList = useSelector(selectors.products) || [];
 
     const handleUpdateProductCount = ({id, count}) => {
         dispatch(actions.updateProduct(id, {count}));
@@ -23,13 +23,13 @@ export default function Home() {
             direction="column"
         >
             <Grid>
-                <DownloadXml products={products} onUpdate={handleUpdateProductCount} />
+                <DownloadXml products={productsList} onUpdate={handleUpdateProductCount} />
             </Grid>
             <Grid>
                 <h1>Таблица</h1>
             </Grid>
             <Grid>
-                {products.length > 0 && <ProductsTable products={products} />}
+                {productsList.length > 0 && <ProductsTable products={productsList} />}
             </Grid>
         </Grid>
     );
