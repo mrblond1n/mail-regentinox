@@ -1,4 +1,5 @@
-import {Grid} from '@material-ui/core';
+import {Box, Grid} from '@material-ui/core';
+import {Skeleton} from '@material-ui/lab';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFirestoreConnect} from 'react-redux-firebase';
@@ -10,11 +11,14 @@ export default function Home() {
     useFirestoreConnect([{collection: 'products'}]);
     const dispatch = useDispatch();
     const productsList = useSelector(selectors.products) || [];
+    // const productsList = [];
+    const isLoading = useSelector(selectors.isLoading);
 
-    const handleUpdateProductCount = ({id, count}) => {
+    const handleUpdateProductCount = ({id, count}) =>
         dispatch(actions.updateProduct(id, {count}));
-    };
-	
+    const handleStartScript = () => dispatch(actions.setStartLoading());
+    const handleStopScript = () => dispatch(actions.setStopLoading());
+
     return (
         <Grid
             container
@@ -22,15 +26,13 @@ export default function Home() {
             alignItems="center"
             direction="column"
         >
-            <Grid>
-                <DownloadXml products={productsList} onUpdate={handleUpdateProductCount} />
-            </Grid>
-            <Grid>
-                <h1>Таблица</h1>
-            </Grid>
-            <Grid>
-                {productsList.length > 0 && <ProductsTable products={productsList} />}
-            </Grid>
+            <DownloadXml
+                products={productsList}
+                onUpdate={handleUpdateProductCount}
+                onStart={handleStartScript}
+                onFinish={handleStopScript}
+            />
+            <ProductsTable products={productsList} loaded={isLoading} />
         </Grid>
     );
 }

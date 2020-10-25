@@ -77,7 +77,7 @@ const getItemValues = (content, products) => {
 
 // const changeItemCount = () => {}
 
-export const parserXmlToXlsx = ({json, products, handleDecrementProducts}) => {
+export const parserXmlToXlsx = ({json, products, handleDecrementProducts, onFinish}) => {
     const fileName = 'orders';
 
     Object.entries(JSON.parse(json).OrderList).forEach(([key, list]) => {
@@ -210,7 +210,8 @@ export const parserXmlToXlsx = ({json, products, handleDecrementProducts}) => {
 
         XLSX.utils.book_append_sheet(wb, ws, ws_name);
         XLSX.writeFile(wb, fileName + '.xlsx');
-
+        onFinish();
+        
         return sheetRows;
     });
 };

@@ -1,23 +1,23 @@
-import {Button} from '@material-ui/core'
-import React, {useCallback, useState} from 'react'
-import {readXlsxFile} from '../../utils/index'
+import {Button} from '@material-ui/core';
+import React, {useCallback, useState} from 'react';
+import {readXlsxFile} from '../../utils/index';
 
-const DownloadXml = ({products, onUpdate}) => {
-    const [file, setFile] = useState(null)
+const DownloadXml = ({products, onUpdate, onStart, onFinish}) => {
+    const [file, setFile] = useState(null);
 
     const handleFileUpload = useCallback(e => setFile(e.target.files[0]), []);
 
     const handleFileDownload = useCallback(() => {
-        if (file.type !== 'text/xml') return
-
-        console.log(readXlsxFile({file, products, handleDecrementProducts}))
-    }, [file])
+        if (file.type !== 'text/xml') return;
+        onStart();
+        readXlsxFile({file, products, handleDecrementProducts, onFinish});
+    }, [file]);
 
     const handleDecrementProducts = orderProducts => {
         orderProducts.forEach(({id, count, countsInStorage}) => {
             if (id) onUpdate({id, count: countsInStorage - count});
-        })
-    }
+        });
+    };
 
     return (
         <div>
@@ -38,7 +38,7 @@ const DownloadXml = ({products, onUpdate}) => {
                 Выгрузить XML
             </Button>
         </div>
-    )
-}
+    );
+};
 
-export default React.memo(DownloadXml)
+export default React.memo(DownloadXml);

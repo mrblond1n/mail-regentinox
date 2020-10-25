@@ -1,5 +1,7 @@
 import {
-	Modal,
+    Box,
+    Grid,
+    Modal,
     Table,
     TableBody,
     TableCell,
@@ -7,18 +9,55 @@ import {
     TableHead,
     TablePagination,
     TableRow,
-    TextField
+    TextField,
+    Typography
 } from '@material-ui/core';
-import React from 'react';
-import {useEffect} from 'react';
-import {useState} from 'react';
+import {Skeleton} from '@material-ui/lab';
+import React, {useEffect, useState} from 'react';
 
-const ProductsTable = ({products}) => {
-    const [page, setPage] = useState(0);
+const ProductsTable = ({products, loaded}) => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    return (
+        <Grid>
+            <Typography variant="h1" component="h2" gutterBottom>
+                Table
+            </Typography>
+            {!products.length || loaded ? (
+                <SkeletTable rows={rowsPerPage} />
+            ) : (
+                <TableWithProducts
+                    products={products}
+                    rowsPerPage={rowsPerPage}
+                    setRowsPerPage={setRowsPerPage}
+                />
+            )}
+        </Grid>
+    );
+};
+
+const SkeletTable = ({rows}) => (
+    <Box>
+        {Array.from(Array(rows), (_, i) => (
+            <Skeleton height={50} width={500} key={i} />
+        ))}
+    </Box>
+);
+
+const TableWithProducts = ({products, rowsPerPage, setRowsPerPage}) => {
     const [searchQuery, setSearchQuery] = useState('');
+
+    const [page, setPage] = useState(0);
     const [filteredProducts, setFilteredProducts] = useState(products);
     const [modal, setModal] = useState(false);
+
+    useEffect(() => {
+        setFilteredProducts(
+            products.filter(({article}) =>
+                article.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+        );
+    }, [searchQuery]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -35,17 +74,9 @@ const ProductsTable = ({products}) => {
 
     const handleClickToProduct = item => {
         console.log(item.code);
-	};
-	
-	const handleOpen = () => setModal(!modal);
+    };
 
-    useEffect(() => {
-        setFilteredProducts(
-            products.filter(({article}) =>
-                article.toLowerCase().includes(searchQuery.toLowerCase())
-            )
-        );
-    }, [searchQuery]);
+    const handleOpen = () => setModal(!modal);
 
     return (
         <TableContainer>
@@ -103,7 +134,6 @@ const ProductsTable = ({products}) => {
                 aria-describedby="simple-modal-description"
             >
                 <div>test</div>
-				
             </Modal>
         </TableContainer>
     );
