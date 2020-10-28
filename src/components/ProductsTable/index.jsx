@@ -1,7 +1,6 @@
 import {
     Box,
     Grid,
-    Modal,
     Table,
     TableBody,
     TableCell,
@@ -13,9 +12,10 @@ import {
     Typography
 } from '@material-ui/core';
 import {Skeleton} from '@material-ui/lab';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Modal} from '..';
 
-const ProductsTable = ({products, loaded}) => {
+const ProductsTable = ({products, loaded, onClickProduct}) => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     return (
@@ -30,6 +30,7 @@ const ProductsTable = ({products, loaded}) => {
                     products={products}
                     rowsPerPage={rowsPerPage}
                     setRowsPerPage={setRowsPerPage}
+                    onClickProduct={onClickProduct}
                 />
             )}
         </Grid>
@@ -44,12 +45,10 @@ const SkeletTable = ({rows}) => (
     </Box>
 );
 
-const TableWithProducts = ({products, rowsPerPage, setRowsPerPage}) => {
+const TableWithProducts = ({products, rowsPerPage, setRowsPerPage, onClickProduct}) => {
     const [searchQuery, setSearchQuery] = useState('');
-
     const [page, setPage] = useState(0);
     const [filteredProducts, setFilteredProducts] = useState(products);
-    const [modal, setModal] = useState(false);
 
     useEffect(() => {
         setFilteredProducts(
@@ -59,24 +58,22 @@ const TableWithProducts = ({products, rowsPerPage, setRowsPerPage}) => {
         );
     }, [searchQuery]);
 
-    const handleChangePage = (event, newPage) => {
+    const handleChangePage = useCallback((event, newPage) => {
         setPage(newPage);
-    };
+    }, []);
 
-    const handleChangeRowsPerPage = event => {
+    const handleChangeRowsPerPage = useCallback(event => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
-    };
+    }, []);
 
-    const handleChangeSearchQuery = e => {
+    const handleChangeSearchQuery = useCallback(e => {
         setSearchQuery(e.target.value);
-    };
+    }, []);
 
-    const handleClickToProduct = item => {
-        console.log(item.code);
-    };
-
-    const handleOpen = () => setModal(!modal);
+    const handleClickToProduct = useCallback(item => {
+        onClickProduct(item);
+    }, []);
 
     return (
         <TableContainer>
@@ -124,17 +121,6 @@ const TableWithProducts = ({products, rowsPerPage, setRowsPerPage}) => {
                 onChangePage={handleChangePage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
             />
-            <button type="button" onClick={handleOpen}>
-                Open Modal
-            </button>
-            <Modal
-                open={modal}
-                onClose={handleOpen}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                <div>test</div>
-            </Modal>
         </TableContainer>
     );
 };

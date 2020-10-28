@@ -1,8 +1,8 @@
-import {Box, Grid} from '@material-ui/core';
-import {Skeleton} from '@material-ui/lab';
-import React from 'react';
+import {Grid} from '@material-ui/core';
+import React, {useCallback, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFirestoreConnect} from 'react-redux-firebase';
+import {Modal} from '../components';
 import DownloadXml from '../components/DownloadXml';
 import ProductsTable from '../components/ProductsTable';
 import {actions, selectors} from '../store';
@@ -11,13 +11,31 @@ export default function Home() {
     useFirestoreConnect([{collection: 'products'}]);
     const dispatch = useDispatch();
     const productsList = useSelector(selectors.products) || [];
-    // const productsList = [];
     const isLoading = useSelector(selectors.isLoading);
 
-    const handleUpdateProductCount = ({id, count}) =>
+    const [show, setShow] = useState(false);
+    const [product, setProduct] = useState(null);
+
+    const handleUpdateProductCount = useCallback(({id, count}) => {
         dispatch(actions.updateProduct(id, {count}));
-    const handleStartScript = () => dispatch(actions.setStartLoading());
-    const handleStopScript = () => dispatch(actions.setStopLoading());
+    }, []);
+
+    const handleStartScript = useCallback(() => {
+        dispatch(actions.setStartLoading());
+    }, []);
+
+    const handleStopScript = useCallback(() => {
+        dispatch(actions.setStopLoading());
+    }, []);
+
+    const openProductModal = useCallback(item => {
+        setProduct(item);
+        swithShowModal();
+    }, []);
+
+    const swithShowModal = useCallback(() => {
+        setShow(!show);
+    }, [show]);
 
     return (
         <Grid
@@ -32,7 +50,12 @@ export default function Home() {
                 onStart={handleStartScript}
                 onFinish={handleStopScript}
             />
-            <ProductsTable products={productsList} loaded={isLoading} />
+            <ProductsTable
+                products={productsList}
+                loaded={isLoading}
+                onClickProduct={openProductModal}
+            />
+            <Modal show={show} onClose={swithShowModal} item={product} />
         </Grid>
     );
 }
