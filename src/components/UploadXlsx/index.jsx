@@ -1,32 +1,53 @@
-import {Button} from '@material-ui/core'
-import React, {useState} from 'react'
-import {parserDataFromXlsxFile} from '../../utils'
+import {Button, ButtonGroup} from '@material-ui/core';
+import React, {useCallback, useRef, useState} from 'react';
+import {makeStyles} from '@material-ui/core/styles';
+import {parserDataFromXlsxFile} from '../../utils';
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        '& > *': {
+            margin: theme.spacing(1)
+        }
+    }
+}));
+
+const buttonTextUpload = 'Загрузить таблицу';
+const buttonConfirmText = 'Получить данные таблицы';
+const onConfirm = '';
 
 const UploadXlsx = ({onGetProducts}) => {
-    const [file, setFile] = useState(null)
-    const handleChange = e => setFile(e.target.files[0])
+    const [file, setFile] = useState(null);
+    const input = useRef();
+    
     const handleTableData = () => parserDataFromXlsxFile(file, onGetProducts);
 
+    const handleChange = useCallback(e => setFile(e.target.files[0]), []);
+
+    const handleOpenUpload = useCallback(() => input.current.click(), []);
+
+    const classes = useStyles();
+
     return (
-        <div>
+        <div className={classes.root}>
             <input
-                // accept="text/xml"
                 style={{display: 'none'}}
-                id="uploadFile"
                 multiple
                 type="file"
+                ref={input}
                 onChange={handleChange}
             />
-            <label htmlFor="uploadFile">
-                <Button variant="outlined" component="span">
-                    Загрузить таблицу
-                </Button>
-            </label>
-            <Button variant="contained" onClick={handleTableData}>
-                Получить данные таблицы
-            </Button>
+            <ButtonGroup
+                color="secondary"
+                aria-label="outlined primary button group"
+            >
+                <Button onClick={handleOpenUpload}>Загрузить таблицу</Button>
+                <Button onClick={handleTableData} disabled={!file}>Получить данные таблицы</Button>
+            </ButtonGroup>
         </div>
-    )
-}
+    );
+};
 
-export default React.memo(UploadXlsx)
+export default React.memo(UploadXlsx);

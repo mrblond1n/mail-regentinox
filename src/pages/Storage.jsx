@@ -2,6 +2,7 @@ import {makeStyles} from '@material-ui/core';
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {ProductForm} from '../components';
+import UploadXlsx from '../components/UploadXlsx';
 import {actions} from '../store';
 
 
@@ -30,8 +31,8 @@ const Storage = () => {
     
     return (
         <div>
-            хранилище
             <ProductForm />
+            <UploadXlsx onGetProducts={() => {}} />
         </div>
     );
 };
