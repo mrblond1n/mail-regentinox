@@ -1,8 +1,8 @@
-import {Button, Grid, makeStyles, TextField} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core';
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
+import {ProductForm} from '../components';
 import {actions} from '../store';
-import {inputsForCreateProduct} from '../utils/fields';
 
 
 const useStyles = makeStyles(theme => ({
@@ -29,23 +29,10 @@ const Storage = () => {
     };
     
     return (
-        <Grid
-            container
-            justify="space-between"
-            alignItems="center"
-            direction="column"
-        >
-            <form className={classes.root} noValidate autoComplete="off">
-                {inputsForCreateProduct.map(({title, name, label}) => (
-                    <React.Fragment key={name}>
-                        <TextField title={title} label={label} name={name} onChange={handleChange} />
-                    </React.Fragment>
-                ))}
-            </form>
-            <Button variant="outlined" color="primary" type="submit" onClick={handleSubmit}>
-                Создать
-            </Button>
-        </Grid>
+        <div>
+            хранилище
+            <ProductForm />
+        </div>
     );
 };
 

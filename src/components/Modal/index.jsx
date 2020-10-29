@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const TransitionsModal = ({item, onClose, show}) => {
+const TransitionsModal = ({children, onClose, show}) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
 
@@ -43,9 +43,7 @@ const TransitionsModal = ({item, onClose, show}) => {
             BackdropProps={{timeout: 500}}
         >
             <Fade in={open}>
-                <div className={classes.paper}>
-                    id product - {item?.id}
-                </div>
+                <div className={classes.paper}>{children}</div>
             </Fade>
         </Modal>
     );
