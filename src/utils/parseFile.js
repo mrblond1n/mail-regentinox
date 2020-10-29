@@ -66,9 +66,8 @@ const getItemValues = (content, products) => {
             }
         });
         items.push({
-            count: getValueFromItem(item.Count),
+            count: Number(getValueFromItem(item.Count)),
             id,
-            countsInStorage
         });
     });
 
@@ -77,12 +76,13 @@ const getItemValues = (content, products) => {
 
 // const changeItemCount = () => {}
 
-export const parserXmlToXlsx = ({json, products, handleDecrementProducts, onFinish}) => {
+export const parserXmlToXlsx = ({json, products, onUpdate}) => {
     const fileName = 'orders';
 
     Object.entries(JSON.parse(json).OrderList).forEach(([key, list]) => {
         const createXLSLFormatObj = [];
         const sheetRows = [];
+        const editableItems = [];
 
         if (key === 'Order') {
             if (!list.length) return;
@@ -127,7 +127,7 @@ export const parserXmlToXlsx = ({json, products, handleDecrementProducts, onFini
                     secondName
                 });
 
-                const items = itemsInfo.items;
+                editableItems.push(itemsInfo.items);
 
                 sheetRows.push({
                     articles,
@@ -142,7 +142,6 @@ export const parserXmlToXlsx = ({json, products, handleDecrementProducts, onFini
                     message,
                     addressString,
                     fullNameString,
-                    items
                 });
             });
         }
@@ -152,7 +151,6 @@ export const parserXmlToXlsx = ({json, products, handleDecrementProducts, onFini
                 addressString,
                 articles,
                 count,
-                items,
                 fullNameString,
                 mailType,
                 mass,
@@ -178,9 +176,9 @@ export const parserXmlToXlsx = ({json, products, handleDecrementProducts, onFini
                 articles
             ];
 
-            handleDecrementProducts(items);
             createXLSLFormatObj.push(innerRowData);
         });
+        onUpdate(createObjectWithEditableItems(editableItems));
         if (sheetRows.length === 0) return;
 
         var ws_name = 'sheet';
@@ -210,8 +208,17 @@ export const parserXmlToXlsx = ({json, products, handleDecrementProducts, onFini
 
         XLSX.utils.book_append_sheet(wb, ws, ws_name);
         XLSX.writeFile(wb, fileName + '.xlsx');
-        onFinish();
         
         return sheetRows;
     });
+};
+
+const createObjectWithEditableItems = editableItems => {
+    const objectEditableItems = {};
+
+    editableItems.forEach(items => {
+        items.forEach(item => (objectEditableItems[item.id] = item.count));
+    });
+
+    return objectEditableItems;
 };

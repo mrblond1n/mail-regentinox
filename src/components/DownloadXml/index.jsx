@@ -2,22 +2,15 @@ import {Button} from '@material-ui/core';
 import React, {useCallback, useState} from 'react';
 import {readXlsxFile} from '../../utils/index';
 
-const DownloadXml = ({products, onUpdate, onStart, onFinish}) => {
+const DownloadXml = ({products, onUpdate}) => {
     const [file, setFile] = useState(null);
 
     const handleFileUpload = useCallback(e => setFile(e.target.files[0]), []);
 
     const handleFileDownload = useCallback(() => {
         if (file.type !== 'text/xml') return;
-        onStart();
-        readXlsxFile({file, products, handleDecrementProducts, onFinish});
+        readXlsxFile({file, products, onUpdate});
     }, [file]);
-
-    const handleDecrementProducts = orderProducts => {
-        orderProducts.forEach(({id, count, countsInStorage}) => {
-            if (id) onUpdate({id, count: countsInStorage - count});
-        });
-    };
 
     return (
         <div>

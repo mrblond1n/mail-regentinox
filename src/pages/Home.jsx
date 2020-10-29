@@ -2,10 +2,9 @@ import {Grid} from '@material-ui/core';
 import React, {useCallback, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFirestoreConnect} from 'react-redux-firebase';
-import {Modal} from '../components';
-import DownloadXml from '../components/DownloadXml';
-import ProductsTable from '../components/ProductsTable';
+import {DownloadXml, Modal, ProductForm, ProductsTable} from '../components/';
 import {actions, selectors} from '../store';
+import {prepareProductForUpdate} from '../utils/prepareData';
 
 export default function Home() {
     useFirestoreConnect([{collection: 'products'}]);
@@ -16,16 +15,17 @@ export default function Home() {
     const [show, setShow] = useState(false);
     const [product, setProduct] = useState(null);
 
-    const handleUpdateProductCount = useCallback(({id, count}) => {
-        dispatch(actions.updateProduct(id, {count}));
-    }, []);
+    const handleUpdateProducts = useCallback(
+        products => {
+            const data = prepareProductForUpdate(products, productsList);
 
-    const handleStartScript = useCallback(() => {
-        dispatch(actions.setStartLoading());
-    }, []);
+            dispatch(actions.updateProducts(data));
+        },
+        [productsList]
+    );
 
-    const handleStopScript = useCallback(() => {
-        dispatch(actions.setStopLoading());
+    const handleUpdateProduct = useCallback(product => {
+        dispatch(actions.updateProduct(product.id, product));
     }, []);
 
     const openProductModal = useCallback(item => {
@@ -46,16 +46,16 @@ export default function Home() {
         >
             <DownloadXml
                 products={productsList}
-                onUpdate={handleUpdateProductCount}
-                onStart={handleStartScript}
-                onFinish={handleStopScript}
+                onUpdate={handleUpdateProducts}
             />
             <ProductsTable
                 products={productsList}
                 loaded={isLoading}
                 onClickProduct={openProductModal}
             />
-            <Modal show={show} onClose={swithShowModal} item={product} />
+            <Modal show={show} onClose={swithShowModal} item={product}>
+                <ProductForm item={product} onSubmit={handleUpdateProduct} />
+            </Modal>
         </Grid>
     );
 }

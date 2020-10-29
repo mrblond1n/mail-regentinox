@@ -42,7 +42,7 @@ export const parserDataFromXlsxFile = (file, onHandler) => {
     reader.readAsBinaryString(file);
 };
 
-export const readXlsxFile = function ({file, products, handleDecrementProducts, onFinish}) {
+export const readXlsxFile = function ({file, products, onUpdate, onFinish}) {
     if (!file) return;
     var text = '';
     var reader = new FileReader();
@@ -50,7 +50,7 @@ export const readXlsxFile = function ({file, products, handleDecrementProducts, 
         text = reader.result;
         const json = convert.xml2json(text, {compact: true, spaces: 0});
 
-        parserXmlToXlsx({json, products, handleDecrementProducts, onFinish});
+        parserXmlToXlsx({json, products, onUpdate, onFinish});
     };
 
     reader.onload = onload;
