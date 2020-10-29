@@ -1,6 +1,5 @@
 .App {
     display: flex;
-    height: 100%;
 }
 
 body, html {
@@ -11,10 +10,11 @@ body, html {
 
 
 .main {
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    padding: 5rem;
 }
 
 .sidebar {

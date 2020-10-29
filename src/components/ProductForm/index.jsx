@@ -10,6 +10,9 @@ const useStyles = makeStyles(theme => ({
         },
         display: 'flex',
         flexDirection: 'column'
+    },
+    button: {
+        marginTop: '1rem'
     }
 }));
 const ProductForm = ({onSubmit, item}) => {
@@ -60,6 +63,7 @@ const ProductForm = ({onSubmit, item}) => {
                 color="primary"
                 type="submit"
                 onClick={handleSubmit}
+                className={classes.button}
             >
                 {buttonText}
             </Button>

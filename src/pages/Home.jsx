@@ -1,13 +1,24 @@
-import {Grid} from '@material-ui/core';
-import React, {useCallback, useState} from 'react';
+import {Button, Grid, makeStyles} from '@material-ui/core';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFirestoreConnect} from 'react-redux-firebase';
 import {DownloadXml, Modal, ProductForm, ProductsTable} from '../components/';
 import {actions, selectors} from '../store';
 import {prepareProductForUpdate} from '../utils/prepareData';
 
+const useStyles = makeStyles(() => ({
+    separator: {
+        height: '2px',
+        width: '100%',
+        background: 'darkgray',
+        margin: '2rem 0'
+    }
+}));
+
 export default function Home() {
     useFirestoreConnect([{collection: 'products'}]);
+    const classes = useStyles();
+
     const dispatch = useDispatch();
     const productsList = useSelector(selectors.products) || [];
     const isLoading = useSelector(selectors.isLoading);
@@ -37,6 +48,10 @@ export default function Home() {
         setShow(!show);
     }, [show]);
 
+    useEffect(() => {
+        if (!show) setProduct(null);
+    }, []);
+
     return (
         <Grid
             container
@@ -49,6 +64,14 @@ export default function Home() {
                 loaded={isLoading}
                 onClickProduct={openProductModal}
             />
+            <Button
+                className={classes.button}
+                color="secondary"
+                onClick={swithShowModal}
+            >
+                Добавить продукт
+            </Button>
+            <div className={classes.separator} />
             <DownloadXml
                 products={productsList}
                 onUpdate={handleUpdateProducts}
