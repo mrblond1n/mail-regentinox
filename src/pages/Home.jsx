@@ -44,14 +44,14 @@ export default function Home() {
             alignItems="center"
             direction="column"
         >
-            <DownloadXml
-                products={productsList}
-                onUpdate={handleUpdateProducts}
-            />
             <ProductsTable
                 products={productsList}
                 loaded={isLoading}
                 onClickProduct={openProductModal}
+            />
+            <DownloadXml
+                products={productsList}
+                onUpdate={handleUpdateProducts}
             />
             <Modal show={show} onClose={swithShowModal} item={product}>
                 <ProductForm item={product} onSubmit={handleUpdateProduct} />
