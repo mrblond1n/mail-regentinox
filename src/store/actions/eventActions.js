@@ -13,22 +13,36 @@ export const createProduct = product => (
     const firestore = getFirestore();
     const authorId = getState().firebase.auth.uid;
 
+    dispatch({type: types.START_LOADING});
     firestore
         .collection('products')
         .add({...product, authorId})
-        .then(() => dispatch({type: types.ADD_PRODUCT, product}))
-        .catch(error => dispatch({type: types.SET_NOTIFY, ...notify(error)}));
+        .then(() => {
+            dispatch({type: types.ADD_PRODUCT});
+            dispatch({type: types.STOP_LOADING});
+        })
+        .catch(error => {
+            dispatch({type: types.SET_NOTIFY, ...notify(error)});
+            dispatch({type: types.STOP_LOADING});
+        });
 };
 
 export const removeProduct = id => (dispatch, dummy, {getFirestore}) => {
     const firestore = getFirestore();
 
+    dispatch({type: types.START_LOADING});
     firestore
         .collection('products')
         .doc(id)
         .delete()
-        .then(() => dispatch({type: types.REMOVE_PRODUCT}))
-        .catch(error => dispatch({type: types.SET_NOTIFY, ...notify(error)}));
+        .then(() => {
+            dispatch({type: types.REMOVE_PRODUCT});
+            dispatch({type: types.STOP_LOADING});
+        })
+        .catch(error => {
+            dispatch({type: types.SET_NOTIFY, ...notify(error)});
+            dispatch({type: types.STOP_LOADING});
+        });
 };
 
 export const updateProduct = (id, product) => (
@@ -74,7 +88,7 @@ export const updateProducts = products => (dispatch, dummy, {getFirestore}) => {
         });
 };
 
-export const overwriteProducts = products => (
+export const addProducts = products => (
     dispatch,
     getState,
     {getFirestore}
@@ -82,13 +96,20 @@ export const overwriteProducts = products => (
     const firestore = getFirestore();
     const authorId = getState().firebase.auth.uid;
 
-    products.forEach(product => {
-        firestore
-            .collection('products')
-            .add({...product, authorId})
-            .then(() => dispatch({type: types.ADD_PRODUCT, product}))
-            .catch(error =>
-                dispatch({type: types.SET_NOTIFY, ...notify(error)})
-            );
-    });
+    dispatch({type: types.START_LOADING});
+
+    const promises = [];
+
+    products.forEach(product =>
+        promises.push(
+            firestore.collection('products').add({...product, authorId})
+        )
+    );
+
+    Promise.all(promises)
+        .then(() => dispatch({type: types.STOP_LOADING}))
+        .catch(error => {
+            dispatch({type: types.SET_NOTIFY, ...notify(error)});
+            dispatch({type: types.STOP_LOADING});
+        });
 };

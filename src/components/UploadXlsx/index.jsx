@@ -18,11 +18,11 @@ const buttonTextUpload = 'Загрузить таблицу';
 const buttonConfirmText = 'Получить данные таблицы';
 const onConfirm = '';
 
-const UploadXlsx = ({onGetProducts}) => {
+const UploadXlsx = ({onSubmit}) => {
     const [file, setFile] = useState(null);
     const input = useRef();
     
-    const handleTableData = () => parserDataFromXlsxFile(file, onGetProducts);
+    const handleTableData = () => parserDataFromXlsxFile(file, onSubmit);
 
     const handleChange = useCallback(e => setFile(e.target.files[0]), []);
 

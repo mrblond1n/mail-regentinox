@@ -15,18 +15,15 @@ const useStyles = makeStyles(theme => ({
         marginTop: '1rem'
     }
 }));
-const ProductForm = ({onSubmit, item}) => {
+
+const ProductForm = ({item, onSubmit, onRemove}) => {
     const classes = useStyles();
     const [product, setProduct] = useState({});
-    const buttonText = item ? 'Изменить' : 'Создать';
+    const buttonText = !!item ? 'Изменить' : 'Создать';
 
-    const handleSubmit = useCallback(() => {
-        onSubmit(product);
-    }, [product]);
-
-    const handleChange = e => {
-        setProduct({...product, [e.target.name]: e.target.value});
-    };
+    const handleSubmit = useCallback(() => onSubmit(product), [product]);
+    const handleChange = useCallback(e => setProduct({...product, [e.target.name]: e.target.value}), [product]);
+    const handleRemove = useCallback(() => onRemove(product), [product]);
 
     useEffect(() => {
         if (!item) return;
@@ -67,6 +64,15 @@ const ProductForm = ({onSubmit, item}) => {
             >
                 {buttonText}
             </Button>
+            {!!item && (
+                <Button
+                    color="secondary"
+                    className={classes.button}
+                    onClick={handleRemove}
+                >
+                    Удалить
+                </Button>
+            )}
         </Grid>
     );
 };
