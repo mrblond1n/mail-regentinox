@@ -6,6 +6,7 @@ body, html {
     padding: 0;
     margin: 0;
     height: 100%;
+    font-family: 'Blender Pro';
 }
 
 
@@ -22,3 +23,110 @@ body, html {
     height: 100%;
 }
 
+@font-face {
+    font-family: 'Blender Pro';
+    src: url('../assets/font/BlenderPro-Medium.eot');
+    src: local('Blender Pro Medium'), local('BlenderPro-Medium'),
+        url('../assets/font/BlenderPro-Medium.eot?#iefix') format('embedded-opentype'),
+        url('../assets/font/BlenderPro-Medium.woff2') format('woff2'),
+        url('../assets/font/BlenderPro-Medium.woff') format('woff'),
+        url('../assets/font/BlenderPro-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Blender Pro';
+    src: url('../assets/font/BlenderPro-ThinItalic.eot');
+    src: local('Blender Pro Thin Italic'), local('BlenderPro-ThinItalic'),
+        url('../assets/font/BlenderPro-ThinItalic.eot?#iefix') format('embedded-opentype'),
+        url('../assets/font/BlenderPro-ThinItalic.woff2') format('woff2'),
+        url('../assets/font/BlenderPro-ThinItalic.woff') format('woff'),
+        url('../assets/font/BlenderPro-ThinItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Blender Pro';
+    src: url('../assets/font/BlenderPro-Heavy.eot');
+    src: local('Blender Pro Heavy'), local('BlenderPro-Heavy'),
+        url('../assets/font/BlenderPro-Heavy.eot?#iefix') format('embedded-opentype'),
+        url('../assets/font/BlenderPro-Heavy.woff2') format('woff2'),
+        url('../assets/font/BlenderPro-Heavy.woff') format('woff'),
+        url('../assets/font/BlenderPro-Heavy.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Blender Pro Book';
+    src: url('../assets/font/BlenderPro-BookItalic.eot');
+    src: local('Blender Pro Book Italic'), local('BlenderPro-BookItalic'),
+        url('../assets/font/BlenderPro-BookItalic.eot?#iefix') format('embedded-opentype'),
+        url('../assets/font/BlenderPro-BookItalic.woff2') format('woff2'),
+        url('../assets/font/BlenderPro-BookItalic.woff') format('woff'),
+        url('../assets/font/BlenderPro-BookItalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Blender Pro Book';
+    src: url('../assets/font/BlenderPro-Book.eot');
+    src: local('Blender Pro Book'), local('BlenderPro-Book'),
+        url('../assets/font/BlenderPro-Book.eot?#iefix') format('embedded-opentype'),
+        url('../assets/font/BlenderPro-Book.woff2') format('woff2'),
+        url('../assets/font/BlenderPro-Book.woff') format('woff'),
+        url('../assets/font/BlenderPro-Book.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Blender Pro';
+    src: url('../assets/font/BlenderPro-Bold.eot');
+    src: local('Blender Pro Bold'), local('BlenderPro-Bold'),
+        url('../assets/font/BlenderPro-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../assets/font/BlenderPro-Bold.woff2') format('woff2'),
+        url('../assets/font/BlenderPro-Bold.woff') format('woff'),
+        url('../assets/font/BlenderPro-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Blender Pro';
+    src: url('../assets/font/BlenderPro-Thin.eot');
+    src: local('Blender Pro Thin'), local('BlenderPro-Thin'),
+        url('../assets/font/BlenderPro-Thin.eot?#iefix') format('embedded-opentype'),
+        url('../assets/font/BlenderPro-Thin.woff2') format('woff2'),
+        url('../assets/font/BlenderPro-Thin.woff') format('woff'),
+        url('../assets/font/BlenderPro-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Blender Pro';
+    src: url('../assets/font/BlenderPro-MediumItalic.eot');
+    src: local('Blender Pro Medium Italic'), local('BlenderPro-MediumItalic'),
+        url('../assets/font/BlenderPro-MediumItalic.eot?#iefix') format('embedded-opentype'),
+        url('../assets/font/BlenderPro-MediumItalic.woff2') format('woff2'),
+        url('../assets/font/BlenderPro-MediumItalic.woff') format('woff'),
+        url('../assets/font/BlenderPro-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Blender Pro';
+    src: url('../assets/font/BlenderPro-BoldItalic.eot');
+    src: local('Blender Pro Bold Italic'), local('BlenderPro-BoldItalic'),
+        url('../assets/font/BlenderPro-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('../assets/font/BlenderPro-BoldItalic.woff2') format('woff2'),
+        url('../assets/font/BlenderPro-BoldItalic.woff') format('woff'),
+        url('../assets/font/BlenderPro-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}

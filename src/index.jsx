@@ -1,4 +1,4 @@
-import {Backdrop, CircularProgress, makeStyles} from '@material-ui/core';
+import {Backdrop, CircularProgress, createMuiTheme, makeStyles, ThemeProvider} from '@material-ui/core';
 import React from 'react';
 import {render} from 'react-dom';
 import {Provider, useSelector} from 'react-redux';
@@ -12,6 +12,13 @@ const useStyles = makeStyles(theme => ({
         color: '#fff'
     }
 }));
+
+const theme = createMuiTheme({
+    typography: {
+        fontFamily: 'Blender Pro',
+        fontSize: 16
+    },
+});
 
 function AuthIsLoaded({children}) {
     const classes = useStyles();
@@ -28,11 +35,13 @@ function AuthIsLoaded({children}) {
 
 const app = (
     <Provider store={store}>
-        <ReactReduxFirebaseProvider {...rrfProps}>
-            <AuthIsLoaded>
-                <App />
-            </AuthIsLoaded>
-        </ReactReduxFirebaseProvider>
+        <ThemeProvider theme={theme}>
+            <ReactReduxFirebaseProvider {...rrfProps}>
+                <AuthIsLoaded>
+                    <App />
+                </AuthIsLoaded>
+            </ReactReduxFirebaseProvider>
+        </ThemeProvider>
     </Provider>
 );
 
