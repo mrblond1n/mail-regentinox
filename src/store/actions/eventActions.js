@@ -20,6 +20,7 @@ export const createProduct = product => (
         .add({...product, authorId})
         .then(() => {
             dispatch({type: types.ADD_PRODUCT});
+            dispatch({type: types.SET_NOTIFY, payload: {text: 'Добавлено!', theme: 'success'}});
             dispatch({type: types.STOP_LOADING});
         })
         .catch(error => {
@@ -38,6 +39,7 @@ export const removeProduct = id => (dispatch, dummy, {getFirestore}) => {
         .delete()
         .then(() => {
             dispatch({type: types.REMOVE_PRODUCT});
+            dispatch({type: types.SET_NOTIFY, payload: {text: 'Удалено!', theme: 'success'}});
             dispatch({type: types.STOP_LOADING});
         })
         .catch(error => {
@@ -82,7 +84,10 @@ export const updateProducts = products => (dispatch, dummy, {getFirestore}) => {
     );
 
     Promise.all(promises)
-        .then(() => dispatch({type: types.STOP_LOADING}))
+        .then(() => {
+            dispatch({type: types.STOP_LOADING});
+            dispatch({type: types.SET_NOTIFY, payload: {text: 'Таблица обновлена!', theme: 'success'}});
+        })
         .catch(error => {
             dispatch({type: types.SET_NOTIFY, ...notify(error)});
             dispatch({type: types.STOP_LOADING});
@@ -108,7 +113,10 @@ export const addProducts = products => (
     );
 
     Promise.all(promises)
-        .then(() => dispatch({type: types.STOP_LOADING}))
+        .then(() => {
+            dispatch({type: types.STOP_LOADING});
+            dispatch({type: types.SET_NOTIFY, payload: {text: 'Товары добавлены', theme: 'success'}});
+        })
         .catch(error => {
             dispatch({type: types.SET_NOTIFY, ...notify(error)});
             dispatch({type: types.STOP_LOADING});
