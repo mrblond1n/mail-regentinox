@@ -2,36 +2,43 @@ export const inputsForCreateProduct = [
     {
         label: 'Код ПМ',
         name: 'code',
-        title: ''
+        title: '',
+        type: 'number'
     },
     {
         label: 'Артикул',
         name: 'article',
-        title: ''
+        title: '',
+        type: 'text'
     },
     {
         label: 'Цена',
         name: 'price',
-        title: ''
+        title: '',
+        type: 'number'
     },
     {
         label: 'Наименование',
         name: 'name',
-        title: ''
+        title: '',
+        type: 'text'
     },
     {
         label: 'Количество',
         name: 'count',
-        title: ''
+        title: '',
+        type: 'number'
     },
     {
         label: 'Вес НЕТТО',
         name: 'netWeight',
-        title: 'Масса товара без тары и упаковки'
+        title: 'Масса товара без тары и упаковки',
+        type: 'number'
     },
     {
         label: 'Вес БРУТТО',
         name: 'grossWeight',
-        title: 'Масса товара вместе с упаковкой'
-    },
+        title: 'Масса товара вместе с упаковкой',
+        type: 'number'
+    }
 ];

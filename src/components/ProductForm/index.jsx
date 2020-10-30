@@ -43,12 +43,13 @@ const ProductForm = ({item, onSubmit, onRemove}) => {
             direction="column"
         >
             <form className={classes.root} noValidate autoComplete="off">
-                {inputsForCreateProduct.map(({title, name, label}) => (
+                {inputsForCreateProduct.map(({title, name, label, type}) => (
                     <React.Fragment key={name}>
                         <TextField
                             title={title}
                             label={label}
                             name={name}
+                            type={type}
                             onChange={handleChange}
                             defaultValue={item?.[name]}
                         />
