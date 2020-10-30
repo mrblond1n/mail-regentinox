@@ -23,7 +23,7 @@ const TableWithProducts = ({
     const [filteredProducts, setFilteredProducts] = useState(products);
 
     useEffect(() => {
-        if (!searchQuery) return;
+        if (!searchQuery) return setFilteredProducts(products);
         setPage(0);
         setFilteredProducts(
             products.filter(({article}) =>
