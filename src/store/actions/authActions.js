@@ -13,7 +13,7 @@ export const signIn = ({email, password}) => (dispatch, getState, {getFirebase})
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(() => dispatch({type: types.LOGIN_SUCCESS}))
-        .catch(error => dispatch({type: types.SET_NOTIFY, ...notify(error)}));
+        .catch(error => dispatch({type: types.SET_NOTIFY, payload: notify(error)}));
 };
 
 export const signOut = () => (dispatch, getState, {getFirebase}) => {
@@ -23,7 +23,7 @@ export const signOut = () => (dispatch, getState, {getFirebase}) => {
         .auth()
         .signOut()
         .then(() => dispatch({type: types.SIGNOUT_SUCCESS}))
-        .catch(error => dispatch({type: types.SET_NOTIFY, ...notify(error)}));
+        .catch(error => dispatch({type: types.SET_NOTIFY, payload: notify(error)}));
 };
 
 export const signUp = newUser => (dispatch, getState, {getFirebase, getFirestore}) => {
@@ -44,5 +44,5 @@ export const signUp = newUser => (dispatch, getState, {getFirebase, getFirestore
                 })
         )
         .then(() => dispatch({type: SIGNUP_SUCCESS}))
-        .catch(error => dispatch({type: types.SET_NOTIFY, ...notify(error)}));
+        .catch(error => dispatch({type: types.SET_NOTIFY, payload: notify(error)}));
 };

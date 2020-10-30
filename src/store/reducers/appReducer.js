@@ -5,9 +5,11 @@ const INITIAL_STATE = {
 };
 
 const projectReducer = (state = INITIAL_STATE, action) => {
-    switch (action.type) {
+    const {payload, type} = action;
+
+    switch (type) {
         case types.SET_NOTIFY:
-            return {...state, notify: action.notify};
+            return {...state, notify: payload};
         case types.START_LOADING:
             return {...state, isLoading: true};
         case types.STOP_LOADING:

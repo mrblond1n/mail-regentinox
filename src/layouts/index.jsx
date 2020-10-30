@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {BrowserRouter} from 'react-router-dom';
+import {Notification} from '../components';
 import * as routes from '../constants/routes';
 import * as pages from '../pages';
+import {selectors} from '../store';
+import {SET_NOTIFY} from '../store/types';
 import Main from './Content';
 import SideBar from './SideBar';
 import style from './style.css';
@@ -16,13 +20,21 @@ export const PagesList = [
     {path: routes.STORAGE, component: pages.Storage, title: 'Хранилище', privating}
 ];
 
-const App = () => (
-    <div className={style.App}>
-        <BrowserRouter>
-            <SideBar />
-            <Main />
-        </BrowserRouter>
-    </div>
-);
+const App = () => {
+    const notify = useSelector(selectors.notify);
+
+    const dispatch = useDispatch();
+    const resetNotify = useCallback(() => dispatch({type: SET_NOTIFY, payload: null}), []);
+
+    return (
+        <div className={style.App}>
+            <BrowserRouter>
+                <SideBar />
+                <Main />
+                <Notification {...notify} show={!!notify} setShow={resetNotify} />
+            </BrowserRouter>
+        </div>
+    );
+};
 
 export default App;
