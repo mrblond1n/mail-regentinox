@@ -1,4 +1,4 @@
-import {Drawer, List, ListItem, ListItemText} from '@material-ui/core';
+import {Avatar, Button, Card, Drawer, List, ListItem, ListItemText} from '@material-ui/core';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {NavLink} from 'react-router-dom';
@@ -9,6 +9,7 @@ import {signOut} from '../store/actions/authActions';
 
 export const SideBar = () => {
     const auth = useSelector(authSelector);
+    const profile = useSelector(state => state.firebase.profile);
     const dispatch = useDispatch();
     const links = PagesList.filter(page => {
         if (auth) return page.privating && page;
@@ -20,7 +21,8 @@ export const SideBar = () => {
 
     return (
         <Drawer variant="permanent" anchor="left">
-            <List>
+            <List className={style.sidebar}>
+                <Avatar className={style.avatar} color="orange">{profile.initials}</Avatar>
                 {links.map(({path, title}) => (
                     <ListItem
                         button
