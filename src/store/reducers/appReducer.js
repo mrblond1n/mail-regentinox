@@ -1,5 +1,4 @@
-import {SET_NOTIFY} from '../../constants/types';
-import {START_LOADING, STOP_LOADING} from '../types';
+import * as types from '../types';
 
 const INITIAL_STATE = {
     notify: null
@@ -7,11 +6,11 @@ const INITIAL_STATE = {
 
 const projectReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case SET_NOTIFY:
+        case types.SET_NOTIFY:
             return {...state, notify: action.notify};
-        case START_LOADING:
+        case types.START_LOADING:
             return {...state, isLoading: true};
-        case STOP_LOADING:
+        case types.STOP_LOADING:
             return {...state, isLoading: false};
         default:
             return state;

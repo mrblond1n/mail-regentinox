@@ -1,13 +1,13 @@
-import { ADD_PRODUCT, EDIT_PRODUCT } from "../types";
+import * as types from '../types';
 
 const projectReducer = (state = {}, action) => {
-  switch (action.type) {
-    case ADD_PRODUCT:
-      return state
-    case EDIT_PRODUCT:
-    default:
-      return state
-  }
-}
+    switch (action.type) {
+        case types.ADD_PRODUCT:
+            return state;
+        case types.EDIT_PRODUCT:
+        default:
+            return state;
+    }
+};
 
-export default projectReducer
+export default projectReducer;

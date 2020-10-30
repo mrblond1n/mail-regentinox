@@ -1,3 +1,4 @@
+import {PRODUCTS} from '../../constants/collections';
 import * as types from '../types';
 
 const notify = error => ({
@@ -15,7 +16,7 @@ export const createProduct = product => (
 
     dispatch({type: types.START_LOADING});
     firestore
-        .collection('products')
+        .collection(PRODUCTS)
         .add({...product, authorId})
         .then(() => {
             dispatch({type: types.ADD_PRODUCT});
@@ -32,7 +33,7 @@ export const removeProduct = id => (dispatch, dummy, {getFirestore}) => {
 
     dispatch({type: types.START_LOADING});
     firestore
-        .collection('products')
+        .collection(PRODUCTS)
         .doc(id)
         .delete()
         .then(() => {
@@ -54,7 +55,7 @@ export const updateProduct = (id, product) => (
 
     dispatch({type: types.START_LOADING});
     firestore
-        .collection('products')
+        .collection(PRODUCTS)
         .doc(id)
         .update(product)
         .then(() => {
@@ -76,7 +77,7 @@ export const updateProducts = products => (dispatch, dummy, {getFirestore}) => {
 
     products.forEach(product =>
         promises.push(
-            firestore.collection('products').doc(product.id).update(product)
+            firestore.collection(PRODUCTS).doc(product.id).update(product)
         )
     );
 
@@ -102,7 +103,7 @@ export const addProducts = products => (
 
     products.forEach(product =>
         promises.push(
-            firestore.collection('products').add({...product, authorId})
+            firestore.collection(PRODUCTS).add({...product, authorId})
         )
     );
 
