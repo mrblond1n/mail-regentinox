@@ -12,6 +12,9 @@ const useStyles = makeStyles(() => ({
         width: '100%',
         background: 'darkgray',
         margin: '2rem 0'
+    },
+    button: {
+        marginTop: '10px'
     }
 }));
 
@@ -61,10 +64,10 @@ export default function Home() {
 
     const handleSwitchTestMode = useCallback(() => setTestMode(!testMode), [testMode]);
 
-    const openProductModal = useCallback(item => {
-        setProduct(item);
+    const handleRowClick = useCallback(index => {
+        setProduct(productsList[index]);
         swithShowModal();
-    }, []);
+    }, [productsList]);
 
     const swithShowModal = useCallback(() => {
         setShow(!show);
@@ -72,7 +75,7 @@ export default function Home() {
 
     useEffect(() => {
         if (!show) setProduct(null);
-    }, []);
+    }, [show]);
 
     return (
         <Grid
@@ -81,11 +84,10 @@ export default function Home() {
             alignItems="center"
             direction="column"
         >
-
             <ProductsTable
                 products={productsList}
                 loaded={isLoading}
-                onClickProduct={openProductModal}
+                onRowClick={handleRowClick}
             />
 
             {/* <UploadXlsx onSubmit={handleAddItems} /> */}
@@ -93,6 +95,7 @@ export default function Home() {
             <Button
                 className={classes.button}
                 color="secondary"
+                variant="contained"
                 onClick={swithShowModal}
             >
                 Добавить продукт
@@ -100,7 +103,7 @@ export default function Home() {
             <div className={classes.separator} />
             <DownloadXml products={productsList} onUpdate={handleUpdates} />
             <FormControlLabel
-                label='Тестовый режим'
+                label="Тестовый режим"
                 checked={testMode}
                 onChange={handleSwitchTestMode}
                 control={<Checkbox color="primary" />}
