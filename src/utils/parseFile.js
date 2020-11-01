@@ -6,6 +6,8 @@ import {
     setColor
 } from './sheetStylesScripts';
 
+import {getFullName} from './common';
+
 const sheetHeaders = [
     'ADDRESSLINE',
     'ADRESAT',
@@ -21,6 +23,21 @@ const sheetHeaders = [
     'АРТИКУЛЫ'
 ];
 
+const headersCell = [
+    'A1',
+    'B1',
+    'C1',
+    'D1',
+    'E1',
+    'F1',
+    'G1',
+    'H1',
+    'I1',
+    'J1',
+    'K1',
+    'L1'
+];
+
 const getValueFromItem = object => object && Object.values(object)[0];
 const getAddress = address => {
     const zipcode = address.zipcode ? address.zipcode + ', ' : '';
@@ -28,14 +45,6 @@ const getAddress = address => {
     const building = address.building ? address.building + ', ' : '';
     const flat = address.flat ? 'кв. ' + address.flat : '';
     const string = zipcode + home + building + flat;
-
-    return string;
-};
-const getFullName = client => {
-    const lastName = client.lastName ? client.lastName + ' ' : '';
-    const firstName = client.firstName ? client.firstName + ' ' : '';
-    const secondName = client.secondName ? client.secondName : '';
-    const string = `${lastName}${firstName}${secondName}`;
 
     return string;
 };
@@ -60,9 +69,9 @@ const getItemValues = (content, products) => {
         products.forEach(product => {
             if (String(product.code) === getValueFromItem(item.GoodsCode)) {
                 id = product.id;
-                countsInStorage = product.count;
+                countsInStorage = Number(product.count);
                 articles += `${product.article}; `;
-                mass += product.netWeight;
+                mass += Number(product.netWeight);
             }
         });
         items.push({
@@ -147,34 +156,7 @@ export const parserXmlToXlsx = ({json, products, onUpdate}) => {
         }
         createXLSLFormatObj.push(sheetHeaders);
         sheetRows.forEach(row => {
-            const {
-                addressString,
-                articles,
-                count,
-                fullNameString,
-                mailType,
-                mass,
-                message,
-                orderDeliverySum,
-                orderId,
-                orderStatus,
-                orderSum,
-                payment
-            } = row;
-            const innerRowData = [
-                addressString,
-                fullNameString,
-                mass,
-                orderSum,
-                payment,
-                orderId,
-                mailType,
-                count,
-                orderStatus,
-                orderDeliverySum,
-                message,
-                articles
-            ];
+            const innerRowData = getInnerRowData(row);
 
             createXLSLFormatObj.push(innerRowData);
         });
@@ -185,20 +167,7 @@ export const parserXmlToXlsx = ({json, products, onUpdate}) => {
 
         const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.aoa_to_sheet(createXLSLFormatObj);
-        const headersCell = [
-            'A1',
-            'B1',
-            'C1',
-            'D1',
-            'E1',
-            'F1',
-            'G1',
-            'H1',
-            'I1',
-            'J1',
-            'K1',
-            'L1'
-        ];
+        
 
         headersCell.forEach(el => (ws[el].s = setBold()));
         ws['!cols'] = fitToColumn(createXLSLFormatObj);
@@ -222,3 +191,18 @@ const createObjectWithEditableItems = editableItems => {
 
     return objectEditableItems;
 };
+
+const getInnerRowData = row => [
+    row?.addressString,
+    row?.fullNameString,
+    row?.mass,
+    row?.orderSum,
+    row?.payment,
+    row?.orderId,
+    row?.mailType,
+    row?.count,
+    row?.orderStatus,
+    row?.orderDeliverySum,
+    row?.message,
+    row?.articles
+];

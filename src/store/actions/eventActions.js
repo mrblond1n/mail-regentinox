@@ -6,11 +6,12 @@ const notify = error => ({
     theme: 'error'
 });
 
-export const createProduct = product => (
+export const createProduct = ({product, testMode}) => (
     dispatch,
     getState,
     {getFirestore}
 ) => {
+    if (testMode) return;
     const firestore = getFirestore();
     const authorId = getState().firebase.auth.uid;
 
@@ -29,7 +30,8 @@ export const createProduct = product => (
         });
 };
 
-export const removeProduct = id => (dispatch, dummy, {getFirestore}) => {
+export const removeProduct = ({id, testMode}) => (dispatch, dummy, {getFirestore}) => {
+    if (testMode) return;
     const firestore = getFirestore();
 
     dispatch({type: types.START_LOADING});
@@ -48,11 +50,12 @@ export const removeProduct = id => (dispatch, dummy, {getFirestore}) => {
         });
 };
 
-export const updateProduct = (id, product) => (
+export const updateProduct = ({id, product, testMode}) => (
     dispatch,
     dummy,
     {getFirestore}
 ) => {
+    if (testMode) return;
     const firestore = getFirestore();
 
     dispatch({type: types.START_LOADING});
@@ -70,8 +73,9 @@ export const updateProduct = (id, product) => (
         });
 };
 
-export const updateProducts = products => (dispatch, dummy, {getFirestore}) => {
+export const updateProducts = ({products, testMode}) => (dispatch, dummy, {getFirestore}) => {
     if (!products) return;
+    if (testMode) return;
     const firestore = getFirestore();
 
     dispatch({type: types.START_LOADING});
@@ -94,11 +98,12 @@ export const updateProducts = products => (dispatch, dummy, {getFirestore}) => {
         });
 };
 
-export const addProducts = products => (
+export const addProducts = ({products, testMode}) => (
     dispatch,
     getState,
     {getFirestore}
 ) => {
+    if (testMode) return;
     const firestore = getFirestore();
     const authorId = getState().firebase.auth.uid;
 

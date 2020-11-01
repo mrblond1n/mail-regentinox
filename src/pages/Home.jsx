@@ -1,9 +1,8 @@
-import {Button, Grid, makeStyles} from '@material-ui/core';
+import {Button, Checkbox, FormControlLabel, Grid, makeStyles} from '@material-ui/core';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFirestoreConnect} from 'react-redux-firebase';
 import {DownloadXml, Modal, ProductForm, ProductsTable} from '../components/';
-import UploadXlsx from '../components/UploadXlsx';
 import {actions, selectors} from '../store';
 import {prepareProductForUpdate} from '../utils/prepareData';
 
@@ -19,41 +18,48 @@ const useStyles = makeStyles(() => ({
 export default function Home() {
     useFirestoreConnect([{collection: 'products'}]);
     const classes = useStyles();
-
+    
     const dispatch = useDispatch();
     const productsList = useSelector(selectors.products) || [];
     const isLoading = useSelector(selectors.isLoading);
-
+    
+    const [testMode, setTestMode] = useState(false);
     const [show, setShow] = useState(false);
     const [product, setProduct] = useState(null);
 
     const handleUpdates = useCallback(
-        products => {
-            const data = prepareProductForUpdate(products, productsList);
+        data => {
+            const products = prepareProductForUpdate(data, productsList);
 
-            dispatch(actions.updateProducts(data));
+            dispatch(actions.updateProducts({products, testMode}));
             setShow(false);
         },
-        [productsList]
+        [productsList, testMode]
     );
 
     const handleUpdate = useCallback(product => {
+        const id = product?.id;
+
         dispatch(
             product.id
-                ? actions.updateProduct(product.id, product)
-                : actions.createProduct(product)
+                ? actions.updateProduct({id, product, testMode})
+                : actions.createProduct({product, testMode})
         );
         setShow(false);
-    }, []);
+    }, [testMode]);
 
     const handleRemove = useCallback(product => {
-        dispatch(actions.removeProduct(product.id));
+        const id = product?.id;
+
+        dispatch(actions.removeProduct({id, testMode}));
         setShow(false);
-    }, []);
+    }, [testMode]);
 
     const handleAddItems = useCallback(products => {
-        dispatch(actions.addProducts(products));
-    }, []);
+        dispatch(actions.addProducts({products, testMode}));
+    }, [testMode]);
+
+    const handleSwitchTestMode = useCallback(() => setTestMode(!testMode), [testMode]);
 
     const openProductModal = useCallback(item => {
         setProduct(item);
@@ -93,6 +99,12 @@ export default function Home() {
             </Button>
             <div className={classes.separator} />
             <DownloadXml products={productsList} onUpdate={handleUpdates} />
+            <FormControlLabel
+                label='Тестовый режим'
+                checked={testMode}
+                onChange={handleSwitchTestMode}
+                control={<Checkbox color="primary" />}
+            />
             <Modal show={show} onClose={swithShowModal} item={product}>
                 <ProductForm
                     item={product}
