@@ -1,6 +1,5 @@
 import XLSX from 'sheetjs-style';
 import {columns, headers} from '../constants/sheetHeadersLocale';
-import {getFullName} from './common';
 import {getFormattedDate} from './date';
 import {
     fitToColumn,
@@ -11,6 +10,7 @@ import {
 import {
     createObjectWithEditableItems,
     getAddress,
+    getFullName,
     getInnerRowData,
     getItemValues,
     getValueFromItem
@@ -35,15 +35,6 @@ export const parserXmlToXlsx = ({json, products, onUpdate}) => {
                     ? getItemValues(content[0], products)
                     : getItemValues(content, products);
 
-                const lastName = getValueFromItem(clientRecivier.LastName);
-                const firstName = getValueFromItem(clientRecivier.FirstName);
-                const secondName = getValueFromItem(clientRecivier.MiddleName);
-                const address = clientRecivier.Address;
-                const zipcode = getValueFromItem(address.Zipcode);
-                const home = getValueFromItem(address.Home);
-                const building = getValueFromItem(address.Building);
-                const flat = getValueFromItem(address.Flat);
-
                 // переменные для списка
                 const articles = itemsInfo.articles;
                 const orderId = getValueFromItem(order.ExtID);
@@ -57,17 +48,8 @@ export const parserXmlToXlsx = ({json, products, onUpdate}) => {
                 const orderSum = itemsInfo.orderSum;
                 const count = itemsInfo.count;
                 const message = itemsInfo.message;
-                const addressString = getAddress({
-                    zipcode,
-                    home,
-                    building,
-                    flat
-                });
-                const fullNameString = getFullName({
-                    firstName,
-                    lastName,
-                    secondName
-                });
+                const addressString = getAddress(clientRecivier.Address);
+                const fullNameString = getFullName(clientRecivier);
 
                 editableItems.push(itemsInfo.items);
 
