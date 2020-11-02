@@ -1,9 +1,9 @@
 import {Box, IconButton} from '@material-ui/core';
-import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 import {Edit} from '@material-ui/icons';
 import {Skeleton} from '@material-ui/lab';
 import MUIDataTable from 'mui-datatables';
 import React, {useState} from 'react';
+import Theme from '../../theme';
 
 const Table = ({
     products,
@@ -27,7 +27,7 @@ const Table = ({
     const columns = getColumns(onRowClick);
 
     return (
-        <MuiThemeProvider theme={getMuiTheme()}>
+        <Theme mode="light">
             <MUIDataTable
                 title={title}
                 data={products}
@@ -35,7 +35,7 @@ const Table = ({
                 columns={columns}
                 options={options}
             />
-        </MuiThemeProvider>
+        </Theme>
     );
 };
 
@@ -48,21 +48,6 @@ const SkeletTable = ({rows}) => (
         ))}
     </Box>
 );
-
-const getMuiTheme = () =>
-    createMuiTheme({
-        overrides: {
-            MUIDataTableBodyCell: {
-                root: {
-                    padding: '5px 10px'
-                }
-            }
-        },
-        typography: {
-            fontFamily: 'Blender Pro',
-            fontSize: 16
-        },
-    });
 
 const getColumns = onRowClick => [
     {
