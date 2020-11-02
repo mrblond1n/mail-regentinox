@@ -1,92 +1,25 @@
 import XLSX from 'sheetjs-style';
+import {columns, headers} from '../constants/sheetHeadersLocale';
+import {getFullName} from './common';
+import {getFormattedDate} from './date';
 import {
     fitToColumn,
     getNumberCellWithValue,
     setBold,
     setColor
 } from './sheetStylesScripts';
+import {
+    createObjectWithEditableItems,
+    getAddress,
+    getInnerRowData,
+    getItemValues,
+    getValueFromItem
+} from './xmlUtils';
 
-import {getFullName} from './common';
-
-const sheetHeaders = [
-    'ADDRESSLINE',
-    'ADRESAT',
-    'MASS',
-    'VALUE',
-    'PAYMENT',
-    'COMMENT',
-    'MAILTYPE',
-    'COUNT',
-    'ORDERSTATUS',
-    'ДОСТАВКА',
-    'ИНФОРМАЦИЯ',
-    'АРТИКУЛЫ'
-];
-
-const headersCell = [
-    'A1',
-    'B1',
-    'C1',
-    'D1',
-    'E1',
-    'F1',
-    'G1',
-    'H1',
-    'I1',
-    'J1',
-    'K1',
-    'L1'
-];
-
-const getValueFromItem = object => object && Object.values(object)[0];
-const getAddress = address => {
-    const zipcode = address.zipcode ? address.zipcode + ', ' : '';
-    const home = address.home ? 'д. ' + address.home + ', ' : '';
-    const building = address.building ? address.building + ', ' : '';
-    const flat = address.flat ? 'кв. ' + address.flat : '';
-    const string = zipcode + home + building + flat;
-
-    return string;
-};
-
-const getItemValues = (content, products) => {
-    let message = '';
-    let count = 0;
-    let orderSum = 0;
-    let mass = 0;
-    let articles = '';
-    const items = [];
-
-    content.forEach(item => {
-        message += `${getValueFromItem(item.GoodsCode)} - ${getValueFromItem(
-            item.Count
-        )}; `;
-        count += Number(getValueFromItem(item.Count));
-        orderSum += Number(getValueFromItem(item.PriceWithDiscount));
-        let id = '';
-        let countsInStorage = 0;
-
-        products.forEach(product => {
-            if (String(product.code) === getValueFromItem(item.GoodsCode)) {
-                id = product.id;
-                countsInStorage = Number(product.count);
-                articles += `${product.article}; `;
-                mass += Number(product.netWeight);
-            }
-        });
-        items.push({
-            count: Number(getValueFromItem(item.Count)),
-            id,
-        });
-    });
-
-    return {articles, mass, message, count, orderSum, items};
-};
-
-// const changeItemCount = () => {}
 
 export const parserXmlToXlsx = ({json, products, onUpdate}) => {
-    const fileName = 'orders';
+    const date = getFormattedDate(new Date());
+    const fileName = `${date}_orders`;
 
     Object.entries(JSON.parse(json).OrderList).forEach(([key, list]) => {
         const createXLSLFormatObj = [];
@@ -150,11 +83,11 @@ export const parserXmlToXlsx = ({json, products, onUpdate}) => {
                     count,
                     message,
                     addressString,
-                    fullNameString,
+                    fullNameString
                 });
             });
         }
-        createXLSLFormatObj.push(sheetHeaders);
+        createXLSLFormatObj.push(headers);
         sheetRows.forEach(row => {
             const innerRowData = getInnerRowData(row);
 
@@ -167,9 +100,8 @@ export const parserXmlToXlsx = ({json, products, onUpdate}) => {
 
         const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.aoa_to_sheet(createXLSLFormatObj);
-        
 
-        headersCell.forEach(el => (ws[el].s = setBold()));
+        columns.forEach(el => (ws[el].s = setBold()));
         ws['!cols'] = fitToColumn(createXLSLFormatObj);
         getNumberCellWithValue(createXLSLFormatObj, 'H').forEach(el =>
             setColor(ws[el])
@@ -177,32 +109,7 @@ export const parserXmlToXlsx = ({json, products, onUpdate}) => {
 
         XLSX.utils.book_append_sheet(wb, ws, ws_name);
         XLSX.writeFile(wb, fileName + '.xlsx');
-        
+
         return sheetRows;
     });
 };
-
-const createObjectWithEditableItems = editableItems => {
-    const objectEditableItems = {};
-
-    editableItems.forEach(items => {
-        items.forEach(item => (objectEditableItems[item.id] = item.count));
-    });
-
-    return objectEditableItems;
-};
-
-const getInnerRowData = row => [
-    row?.addressString,
-    row?.fullNameString,
-    row?.mass,
-    row?.orderSum,
-    row?.payment,
-    row?.orderId,
-    row?.mailType,
-    row?.count,
-    row?.orderStatus,
-    row?.orderDeliverySum,
-    row?.message,
-    row?.articles
-];
