@@ -27,9 +27,9 @@ export const getAddress = address => {
  * @return склеенную строку, где каждое слово начинается с большой буквы
  * */
 export const getFullName = client => {
-    const lastName = getValueFromItem(client.LastName);
-    const firstName = getValueFromItem(client.FirstName);
-    const secondName = getValueFromItem(client.MiddleName);
+    const lastName = getValueFromItem(client.LastName) || '';
+    const firstName = getValueFromItem(client.FirstName) || '';
+    const secondName = getValueFromItem(client.MiddleName) || '';
     const name = `${lastName} ${firstName} ${secondName}`;
     let capitalizeName = '';
 
