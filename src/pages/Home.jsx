@@ -35,7 +35,6 @@ export default function Home() {
             const products = prepareProductForUpdate(data, productsList);
 
             dispatch(actions.updateProducts({products, testMode}));
-            setShow(false);
         },
         [productsList, testMode]
     );
@@ -58,18 +57,18 @@ export default function Home() {
         setShow(false);
     }, [testMode]);
 
-    const handleAddItems = useCallback(products => {
-        dispatch(actions.addProducts({products, testMode}));
-    }, [testMode]);
+    // const handleAddItems = useCallback(products => {
+    //     dispatch(actions.addProducts({products, testMode}));
+    // }, [testMode]);
 
     const handleSwitchTestMode = useCallback(() => setTestMode(!testMode), [testMode]);
 
     const handleRowClick = useCallback(index => {
         setProduct(productsList[index]);
-        swithShowModal();
+        switchShowModal();
     }, [productsList]);
 
-    const swithShowModal = useCallback(() => {
+    const switchShowModal = useCallback(() => {
         setShow(!show);
     }, [show]);
 
@@ -96,7 +95,7 @@ export default function Home() {
                 className={classes.button}
                 color="secondary"
                 variant="contained"
-                onClick={swithShowModal}
+                onClick={switchShowModal}
             >
                 Добавить продукт
             </Button>
@@ -108,7 +107,7 @@ export default function Home() {
                 onChange={handleSwitchTestMode}
                 control={<Checkbox color="primary" />}
             />
-            <Modal show={show} onClose={swithShowModal} item={product}>
+            <Modal show={show} onClose={switchShowModal} item={product}>
                 <ProductForm
                     item={product}
                     onSubmit={handleUpdate}

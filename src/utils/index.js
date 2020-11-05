@@ -11,18 +11,18 @@ import convert from 'xml-js';
  * парсинг данных из XLSX файла
  */ 
 export const parserDataFromXlsxFile = (file, onHandler) => {
-    var reader = new FileReader();
+    const reader = new FileReader();
     const items = [];
 
     reader.onload = function () {
-        var fileData = reader.result;
-        var wb = XLSX.read(fileData, {type: 'binary'});
+        const fileData = reader.result;
+        const wb = XLSX.read(fileData, {type: 'binary'});
 
         wb.SheetNames.forEach(sheetName => {
-            var rowObj = XLSX.utils.sheet_to_row_object_array(
+            const rowObj = XLSX.utils.sheet_to_row_object_array(
                 wb.Sheets[sheetName]
             );
-            var jsonObj = JSON.stringify(rowObj);
+            const jsonObj = JSON.stringify(rowObj);
 
             JSON.parse(jsonObj).forEach(item => {
                 if (typeof item[headers.INDEX] !== 'number') return;
@@ -42,17 +42,17 @@ export const parserDataFromXlsxFile = (file, onHandler) => {
     reader.readAsBinaryString(file);
 };
 
-export const readXlsxFile = function ({file, products, onUpdate, onFinish}) {
+export const readXlsxFile = function ({file, products, onUpdate}) {
     if (!file) return;
-    var text = '';
-    var reader = new FileReader();
-    var onload = function (event) {
+    let text = '';
+    const reader = new FileReader();
+
+    reader.onload = function () {
         text = reader.result;
         const json = convert.xml2json(text, {compact: true, spaces: 0});
 
-        parserXmlToXlsx({json, products, onUpdate, onFinish});
+        parserXmlToXlsx({json, products, onUpdate});
     };
 
-    reader.onload = onload;
     reader.readAsText(file);
 };

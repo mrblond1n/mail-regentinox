@@ -16,7 +16,6 @@ import {
     getValueFromItem
 } from './xmlUtils';
 
-
 export const parserXmlToXlsx = ({json, products, onUpdate}) => {
     const date = getFormattedDate(new Date());
     const fileName = `${date}_orders`;
@@ -26,9 +25,11 @@ export const parserXmlToXlsx = ({json, products, onUpdate}) => {
         const sheetRows = [];
         const editableItems = [];
 
+        const orders = !list.length ? Array(list) : list;
+
         if (key === 'Order') {
-            if (!list.length) return;
-            list.forEach(order => {
+            if (!orders.length) return;
+            orders.forEach(order => {
                 const clientRecivier = order.ClientReceiver;
                 const content = Object.values(order.Content);
                 const itemsInfo = Array.isArray(content[0])

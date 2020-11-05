@@ -2,16 +2,21 @@ import {PRODUCTS} from '../../constants/collections';
 import * as types from '../types';
 
 const notify = error => ({
-    text: error?.message || 'Unknow error',
+    text: error?.message || 'Unknown error',
     theme: 'error'
 });
+
+const notifyTestMode = {
+    text: 'Запись не была совершена, включен тестовый режим',
+    theme: 'warning'
+};
 
 export const createProduct = ({product, testMode}) => (
     dispatch,
     getState,
     {getFirestore}
 ) => {
-    if (testMode) return;
+    if (testMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
     const firestore = getFirestore();
     const authorId = getState().firebase.auth.uid;
 
@@ -31,7 +36,7 @@ export const createProduct = ({product, testMode}) => (
 };
 
 export const removeProduct = ({id, testMode}) => (dispatch, dummy, {getFirestore}) => {
-    if (testMode) return;
+    if (testMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
     const firestore = getFirestore();
 
     dispatch({type: types.START_LOADING});
@@ -55,7 +60,7 @@ export const updateProduct = ({id, product, testMode}) => (
     dummy,
     {getFirestore}
 ) => {
-    if (testMode) return;
+    if (testMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
     const firestore = getFirestore();
 
     dispatch({type: types.START_LOADING});
@@ -74,8 +79,7 @@ export const updateProduct = ({id, product, testMode}) => (
 };
 
 export const updateProducts = ({products, testMode}) => (dispatch, dummy, {getFirestore}) => {
-    if (!products) return;
-    if (testMode) return;
+    if (testMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
     const firestore = getFirestore();
 
     dispatch({type: types.START_LOADING});
@@ -103,7 +107,7 @@ export const addProducts = ({products, testMode}) => (
     getState,
     {getFirestore}
 ) => {
-    if (testMode) return;
+    if (testMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
     const firestore = getFirestore();
     const authorId = getState().firebase.auth.uid;
 

@@ -1,4 +1,5 @@
 export const prepareProductForUpdate = (editableProducts, products) =>
-    products.filter(({id, count}) =>
-        editableProducts[id] && {id, count: count - editableProducts[id]}
-    );
+    products
+        .map(({id, count}) => ({id, count: count - editableProducts[id]}))
+        .filter(({count}) => !!count);
+
