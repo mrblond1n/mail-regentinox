@@ -1,5 +1,7 @@
 import {PRODUCTS} from '../../constants/collections';
 import * as types from '../types';
+const isDevelopMode = process.env.NODE_ENV === 'development';
+
 
 const notify = error => ({
     text: error?.message || 'Unknown error',
@@ -16,7 +18,7 @@ export const createProduct = ({product, testMode}) => (
     getState,
     {getFirestore}
 ) => {
-    if (testMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
+    if (testMode || isDevelopMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
     const firestore = getFirestore();
     const authorId = getState().firebase.auth.uid;
 
@@ -36,7 +38,7 @@ export const createProduct = ({product, testMode}) => (
 };
 
 export const removeProduct = ({id, testMode}) => (dispatch, dummy, {getFirestore}) => {
-    if (testMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
+    if (testMode || isDevelopMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
     const firestore = getFirestore();
 
     dispatch({type: types.START_LOADING});
@@ -60,7 +62,7 @@ export const updateProduct = ({id, product, testMode}) => (
     dummy,
     {getFirestore}
 ) => {
-    if (testMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
+    if (testMode || isDevelopMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
     const firestore = getFirestore();
 
     dispatch({type: types.START_LOADING});
@@ -79,7 +81,7 @@ export const updateProduct = ({id, product, testMode}) => (
 };
 
 export const updateProducts = ({products, testMode}) => (dispatch, dummy, {getFirestore}) => {
-    if (testMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
+    if (testMode || isDevelopMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
     const firestore = getFirestore();
 
     dispatch({type: types.START_LOADING});
@@ -107,7 +109,7 @@ export const addProducts = ({products, testMode}) => (
     getState,
     {getFirestore}
 ) => {
-    if (testMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
+    if (testMode || isDevelopMode) return dispatch({type: types.SET_NOTIFY, payload: notifyTestMode});
     const firestore = getFirestore();
     const authorId = getState().firebase.auth.uid;
 

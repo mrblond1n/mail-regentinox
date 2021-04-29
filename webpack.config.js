@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
 
-module.exports = () => {
+module.exports = (a, {mode}) => {
     const env = dotenv.config().parsed;
 
     // reduce it to a nice object, the same as before
@@ -68,7 +68,12 @@ module.exports = () => {
             new HtmlWebpackPlugin({
                 template: './src/index.html'
             }),
-            new webpack.DefinePlugin(envKeys)
+            new webpack.DefinePlugin({
+                ...envKeys,
+                'process.env': {
+                    NODE_ENV: JSON.stringify(mode)
+                }
+            }),
         ],
         devServer: {
             compress: true,
