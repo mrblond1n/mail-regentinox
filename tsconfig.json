@@ -1,0 +1,22 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true, // chart
+    "alwaysStrict": true,
+    "baseUrl": "./src", // chart /source -> /src
+    "jsx": "react", // chart
+    "module": "esnext", // chart
+    "moduleResolution": "node", // chart
+    "noErrorTruncation": true, // chart
+    "noImplicitAny": false, // chart - true
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
+    "removeComments": true, // chart - false
+    "resolveJsonModule": true, // chart
+    "skipLibCheck": true, // chart
+    "strictFunctionTypes": true, // chart
+    "strictNullChecks": true, // chart - true
+    "target": "esnext", // chart
+    "watch": true,
+  },
+}

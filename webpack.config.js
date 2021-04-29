@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
+const {TypedCssModulesPlugin} = require('typed-css-modules-webpack-plugin');
 
 module.exports = (a, {mode}) => {
     const env = dotenv.config().parsed;
@@ -24,12 +25,12 @@ module.exports = (a, {mode}) => {
             // Директории в которых будут скать скрипты если не указан путь
             modules: ['node_modules', 'src'],
             // Расширения которые можно не дописывать при импорте
-            extensions: ['.jsx', '.js', '.scss', '.css']
+            extensions: ['.jsx', '.js', '.scss', '.css', '.ts', '.tsx']
         },
         module: {
             rules: [
                 {
-                    test: /\.(js|jsx)$/,
+                    test: /\.([tj])sx?$/,
                     exclude: /node_modules/,
                     use: ['babel-loader']
                 },
@@ -65,6 +66,10 @@ module.exports = (a, {mode}) => {
             ]
         },
         plugins: [
+            new TypedCssModulesPlugin({
+                globPattern: 'src/**/*.css',
+                camelCase: true,
+            }),
             new HtmlWebpackPlugin({
                 template: './src/index.html'
             }),
