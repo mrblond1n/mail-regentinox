@@ -42,6 +42,7 @@ export const parserXmlToXlsx = ({json, products, onUpdate}) => {
                 const payment = 0;
                 const mass = itemsInfo.mass;
                 const mailType = 23;
+                const mobilePhone = getValueFromItem(clientRecivier.Address.m_phone);
                 const orderStatus = getValueFromItem(order.OrderStatus);
                 const orderDeliverySum = getValueFromItem(
                     order.OrderDeliverySum
@@ -60,6 +61,7 @@ export const parserXmlToXlsx = ({json, products, onUpdate}) => {
                     orderId,
                     mass,
                     mailType,
+                    mobilePhone,
                     orderStatus,
                     orderDeliverySum,
                     orderSum,
@@ -86,7 +88,7 @@ export const parserXmlToXlsx = ({json, products, onUpdate}) => {
 
         columns.forEach(el => (ws[el].s = setBold()));
         ws['!cols'] = fitToColumn(createXLSLFormatObj);
-        getNumberCellWithValue(createXLSLFormatObj, 'H').forEach(el =>
+        getNumberCellWithValue(createXLSLFormatObj, 'I').forEach(el =>
             setColor(ws[el])
         );
 

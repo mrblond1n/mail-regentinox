@@ -1,6 +1,6 @@
 export const fitToColumn = arrayOfArray =>
     arrayOfArray[0].map((a, i) => ({
-        wch: Math.max(...arrayOfArray.map(a2 => a2[i].toString().length + 5))
+        wch: Math.max(...arrayOfArray.map(a2 => (a2[i]?.toString().length || 0) + 5))
     }));
 
 export const getColor = count => {

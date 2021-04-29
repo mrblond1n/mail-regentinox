@@ -10,6 +10,7 @@ export const PRICE = 'цена ';
 export const headers = [
     'ADDRESSLINE',
     'ADRESAT',
+    'PHONE',
     'MASS',
     'VALUE',
     'PAYMENT',
@@ -34,5 +35,6 @@ export const columns = [
     'I1',
     'J1',
     'K1',
-    'L1'
+    'L1',
+    'M1',
 ];

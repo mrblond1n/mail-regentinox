@@ -16,7 +16,7 @@ export const getAddress = address => {
     const home = getValueFromItem(address?.Home) ? 'д. ' + getValueFromItem(address?.Home) + ' ' : '';
     const building = getValueFromItem(address?.Building) ? 'стр. ' + getValueFromItem(address?.Building) + ' ' : '';
     const flat = getValueFromItem(address?.Flat) ? 'кв. ' + getValueFromItem(address?.Flat) : '';
-    
+
     return zipcode + region + city + street + home + building + flat;
 };
 
@@ -47,6 +47,7 @@ export const getFullName = client => {
 export const getInnerRowData = row => [
     row?.addressString,
     row?.fullNameString,
+    row?.mobilePhone,
     row?.mass,
     row?.orderSum,
     row?.payment,
