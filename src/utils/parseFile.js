@@ -1,6 +1,7 @@
 import XLSX from 'sheetjs-style';
 import {columns, headers} from '../constants/sheetHeadersLocale';
 import {getFormattedDate} from './date';
+import {formatPhone} from '../features/utils/formatting';
 import {
     fitToColumn,
     getNumberCellWithValue,
@@ -42,7 +43,7 @@ export const parserXmlToXlsx = ({json, products, onUpdate}) => {
                 const payment = 0;
                 const mass = itemsInfo.mass;
                 const mailType = 23;
-                const mobilePhone = getValueFromItem(clientRecivier.Address.m_phone);
+                const mobilePhone = formatPhone(getValueFromItem(clientRecivier.Address.m_phone));
                 const orderStatus = getValueFromItem(order.OrderStatus);
                 const orderDeliverySum = getValueFromItem(
                     order.OrderDeliverySum
