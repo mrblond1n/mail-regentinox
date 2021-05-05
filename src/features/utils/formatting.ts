@@ -14,7 +14,7 @@ export const formatPhone = (number: string): string | null => {
     phone = insertAt(phone, 9, ' ');
     phone = insertAt(phone, 12, '-');
 
-    return `+${phone}`;
+    return phone;
 };
 
 export const getCorrectPhoneNumber = (number: string): string => {
